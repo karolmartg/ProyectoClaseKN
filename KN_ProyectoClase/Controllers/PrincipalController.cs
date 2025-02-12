@@ -20,6 +20,15 @@ namespace KN_ProyectoClase.Controllers
         [HttpPost]
         public ActionResult RegistrarCuenta(UsuarioModel model)
         {
+            // Esto es una forma de validar pero no es la más correcta
+            /*
+            if (string.IsNullOrEmpty(model.Identificacion))
+            {
+                return View();
+            }
+            */
+
+
             using (var context = new KN_DBEntities())
             {
             // EF usando LinkQ
@@ -35,8 +44,19 @@ namespace KN_ProyectoClase.Controllers
                 context.SaveChanges();
             */
                 // EF usando Procedimientos Almacenados
-                context.RegistrarCuenta(model.Identificacion, model.Contrasenna, model.Nombre, model.Correo);
+                var result = context.RegistrarCuenta(model.Identificacion, model.Contrasenna, model.Nombre, model.Correo);
 
+                // EF siempre nos devuelve la cantidad de filas afectadas
+                // Si se afectan las filas, debemos tener un resultado >= 1
+                if (result > 0) return RedirectToAction("IniciarSesion", "Principal");
+                
+                // Si no se afectan las filas por algún error, el resultado deberá ser <= 0
+                else if (result <= 0)
+                {
+                    // Devolvemos un mensaje de error
+                    ViewBag.Mensaje = "Su información no se ha podido registrar correctamente.";
+                    return View();
+                }
             }
 
             return View();
@@ -64,11 +84,28 @@ namespace KN_ProyectoClase.Controllers
                 var info = context.IniciarSesion(model.Identificacion, model.Contrasenna).FirstOrDefault();
 
                 // Si encuentra algo 
-                if (info != null) return RedirectToAction("Inicio", "Principal"); 
+                if (info != null)
+                {
+                    // Variables de sesión
+                    Session["NombreUsuario"] = info.Nombre;
+                    return RedirectToAction("Inicio", "Principal");
+                }
+                else if (info == null)
+                {
+                    ViewBag.Mensaje = "Su información no se ha podido validar correctamente.";
+                    return View();
+                }
             }
 
         
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult CerrarSesion()
+        {
+            Session.Clear();
+            return RedirectToAction("IniciarSesion", "Principal");
         }
 
 

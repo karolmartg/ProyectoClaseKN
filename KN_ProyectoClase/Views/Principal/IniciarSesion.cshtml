@@ -19,7 +19,13 @@
                                 <h1 class="h4 text-gray-900 mb-4">Iniciar Sesión</h1>
                             </div>
 
-                            @using (Html.BeginForm("IniciarSesion","Principal"))
+                            @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+                            {
+                                <div class="alert alert-warning msjCentrado">
+                                    @ViewBag.Mensaje
+                                </div>
+                            }
+                            @using (Html.BeginForm("IniciarSesion", "Principal"))
                             {
                                 <div class="form-group">
                                     @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control form-control-user", @placeholder = "Identificación" })

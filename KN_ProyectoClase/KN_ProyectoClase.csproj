@@ -215,11 +215,13 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Template\css\all.css" />
     <Content Include="Template\css\all.min.css" />
+    <Content Include="Template\css\generales.css" />
     <Content Include="Template\css\sb-admin-2.css" />
     <Content Include="Template\css\sb-admin-2.min.css" />
     <Content Include="Template\img\undraw_profile.svg" />
     <Content Include="Template\js\bootstrap.bundle.js" />
     <Content Include="Template\js\bootstrap.bundle.min.js" />
+    <Content Include="Template\js\generales.js" />
     <Content Include="Template\js\jquery.easing.js" />
     <Content Include="Template\js\jquery.easing.min.js" />
     <Content Include="Template\js\jquery.js" />

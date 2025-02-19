@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewBag.Title = "AgregarOferta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.DropDownListFor(m => m.idPuesto, ViewBag.PuestosCombo as List<KN_ProyectoClase.BD.ConsultarPuestos_Result>, new { @class = "form-control form-control-user" })
+

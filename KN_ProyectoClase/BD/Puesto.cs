@@ -12,16 +12,19 @@ namespace KN_ProyectoClase.BD
     using System;
     using System.Collections.Generic;
     
-    public partial class Usuario
+    public partial class Puesto
     {
-        public long Id { get; set; }
-        public string Identificacion { get; set; }
-        public string Contrasenna { get; set; }
-        public string Nombre { get; set; }
-        public string Correo { get; set; }
-        public bool Estado { get; set; }
-        public int idPerfil { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Puesto()
+        {
+            this.Oferta = new HashSet<Oferta>();
+        }
     
-        public virtual Perfil Perfil { get; set; }
+        public long Id { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Oferta> Oferta { get; set; }
     }
 }

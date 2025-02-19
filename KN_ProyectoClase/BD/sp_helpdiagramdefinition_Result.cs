@@ -11,15 +11,9 @@ namespace KN_ProyectoClase.BD
 {
     using System;
     
-    public partial class IniciarSesion_Result
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public long Id { get; set; }
-        public string Identificacion { get; set; }
-        public string Contrasenna { get; set; }
-        public string NombreUsuario { get; set; }
-        public string Correo { get; set; }
-        public bool Estado { get; set; }
-        public int idPerfil { get; set; }
-        public string NombrePerfil { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

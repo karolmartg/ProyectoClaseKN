@@ -11,15 +11,12 @@ namespace KN_ProyectoClase.BD
 {
     using System;
     
-    public partial class IniciarSesion_Result
+    public partial class sp_helpdiagrams_Result
     {
-        public long Id { get; set; }
-        public string Identificacion { get; set; }
-        public string Contrasenna { get; set; }
-        public string NombreUsuario { get; set; }
-        public string Correo { get; set; }
-        public bool Estado { get; set; }
-        public int idPerfil { get; set; }
-        public string NombrePerfil { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

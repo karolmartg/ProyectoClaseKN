@@ -10,16 +10,18 @@
 namespace KN_ProyectoClase.BD
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class IniciarSesion_Result
+    public partial class Oferta
     {
         public long Id { get; set; }
-        public string Identificacion { get; set; }
-        public string Contrasenna { get; set; }
-        public string NombreUsuario { get; set; }
-        public string Correo { get; set; }
-        public bool Estado { get; set; }
-        public int idPerfil { get; set; }
-        public string NombrePerfil { get; set; }
+        public long idPuesto { get; set; }
+        public int Cantidad { get; set; }
+        public decimal Salario { get; set; }
+        public string Horario { get; set; }
+    
+        public virtual Oferta Oferta1 { get; set; }
+        public virtual Oferta Oferta2 { get; set; }
+        public virtual Puesto Puesto { get; set; }
     }
 }

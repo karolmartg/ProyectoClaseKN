@@ -1,32 +1,47 @@
 ﻿@model List<KN_ProyectoClase.BD.ConsultarPuestos_Result>
+
 @{
     ViewBag.Title = "ConsultarPuestos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Mantenimiento Puestos</h6>
+<div class="container-fluid">
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Mantenimiento de Puestos</h6>
+        </div>
+
+        <div class="Margen">
+            <a class="btn btn-primary" href="@Url.Action("AgregarPuesto","Puesto")"> + Agregar</a>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Descripcion</td>
+                        <td><a href="@Url.Action("ActualizarPuesto","Puesto", new { q = item.Id })"><i class="fa fa-edit"></i></a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
     </div>
 
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Nombre</td>
-                    <td>@item.Descripcion</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>
+
+
+

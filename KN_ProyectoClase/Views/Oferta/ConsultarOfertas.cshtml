@@ -1,24 +1,19 @@
 ﻿@model List<KN_ProyectoClase.BD.ConsultarOfertas_Result>
 
-    @{
-        ViewBag.Title = "ConsultarOfertas";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+@{
+    ViewBag.Title = "ConsultarOfertas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<style>
-    .Margen {
-        margin: 10px 10px 10px 10px;
-        text-align: right;
-    }
-</style>
+<div class="container-fluid">
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Mantenimiento Ofertas</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Mantenimiento de Ofertas</h6>
         </div>
 
         <div class="Margen">
-            <a class="btn btn-primary" href="@Url.Action("AgregarOferta", "Oferta")">+ Agregar </a>
+            <a class="btn btn-primary" href="@Url.Action("AgregarOferta","Oferta")"> + Agregar</a>
         </div>
 
         <table class="table table-bordered table-hover">
@@ -26,25 +21,34 @@
                 <tr>
                     <th>#</th>
                     <th>Nombre</th>
-                    <th>Descripción</th>
                     <th>Cantidad</th>
                     <th>Salario</th>
                     <th>Horario</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
-
             <tbody>
+
                 @foreach (var item in Model)
                 {
+
+                    var disponible = item.Disponible ? "Activo" : "Inactivo";
+
                     <tr>
                         <td>@item.Id</td>
-                        <td>@item.NOMBRE</td>
-                        <td>@item.Descripcion</td>
+                        <td>@item.Nombre</td>
                         <td>@item.Cantidad</td>
                         <td>$ @item.Salario.ToString("N2")</td>
                         <td>@item.Horario</td>
+                        <td>@disponible</td>
+                        <td><a href="@Url.Action("ActualizarOferta","Oferta", new { q = item.Id })"><i class="fa fa-edit"></i></a></td>
                     </tr>
                 }
+
             </tbody>
         </table>
     </div>
+
+</div>
+

@@ -1,4 +1,4 @@
-﻿@model KN_ProyectoClase.Models.PuestoModel
+﻿@model KN_ProyectoClase.BD.Puesto
 
 @{
     ViewBag.Title = "AgregarPuesto";
@@ -10,7 +10,7 @@
     <div class="col-lg-6 col-md-8">
 
         <div class="text-center">
-            <h1 class="h4 text-gray-900 mb-4">Crear Puesto</h1>
+            <h1 class="h4 text-gray-900 mb-4">Actualizar Puesto</h1>
         </div>
 
         @if (ViewBag.Mensaje != null)
@@ -20,8 +20,10 @@
             </div>
         }
 
-        @using (Html.BeginForm("AgregarPuesto", "Puesto"))
+        @using (Html.BeginForm("ActualizarPuesto", "Puesto"))
         {
+            @Html.HiddenFor(x => x.Id, new { @class = "form-control form-control-user", @placeholder = "Id", @Required = "true" })
+
             <div class="form-group">
                 @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre", @Required = "true" })
             </div>

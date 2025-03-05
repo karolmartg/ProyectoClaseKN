@@ -10,10 +10,17 @@
 namespace KN_ProyectoClase.BD
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_helpdiagramdefinition_Result
+    public partial class UsuariosOferta
     {
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public long Id { get; set; }
+        public long IdUsuario { get; set; }
+        public long IdOferta { get; set; }
+        public System.DateTime Fecha { get; set; }
+        public int Estado { get; set; }
+    
+        public virtual Oferta Oferta { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

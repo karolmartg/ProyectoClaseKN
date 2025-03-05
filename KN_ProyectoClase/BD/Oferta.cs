@@ -19,9 +19,9 @@ namespace KN_ProyectoClase.BD
         public int Cantidad { get; set; }
         public decimal Salario { get; set; }
         public string Horario { get; set; }
+        public bool Disponible { get; set; }
     
-        public virtual Oferta Oferta1 { get; set; }
-        public virtual Oferta Oferta2 { get; set; }
         public virtual Puesto Puesto { get; set; }
+        public virtual UsuariosOferta UsuariosOferta { get; set; }
     }
 }

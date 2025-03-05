@@ -4,14 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="80d38db79bd44d66bc0a68878b856038" Name="Diagram1">
-        <EntityTypeShape EntityType="KN_DBModel.Perfil" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="KN_DBModel.Puesto" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="KN_DBModel.Usuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="08c7de04d997434d9c4f72b62bc2baf7" Name="Diagram1">
+        <EntityTypeShape EntityType="KN_DBModel.Oferta" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="KN_DBModel.Perfil" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KN_DBModel.Puesto" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KN_DBModel.Usuario" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="KN_DBModel.UsuariosOferta" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="KN_DBModel.FK_Oferta_Puesto" ManuallyRouted="false" />
+        <AssociationConnector Association="KN_DBModel.FK_UsuariosOferta_Oferta" ManuallyRouted="false" />
         <AssociationConnector Association="KN_DBModel.FK_Usuario_Perfil" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="KN_DBModel.Oferta" Width="1.5" PointX="3" PointY="4.375" />
-        <AssociationConnector Association="KN_DBModel.FK_Oferta_Oferta" />
-        <AssociationConnector Association="KN_DBModel.FK_Oferta_Puesto" />
+        <AssociationConnector Association="KN_DBModel.FK_UsuariosOferta_Usuario" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

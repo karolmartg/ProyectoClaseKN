@@ -23,5 +23,6 @@ namespace KN_ProyectoClase.BD
         public int idPerfil { get; set; }
     
         public virtual Perfil Perfil { get; set; }
+        public virtual UsuariosOferta UsuariosOferta { get; set; }
     }
 }

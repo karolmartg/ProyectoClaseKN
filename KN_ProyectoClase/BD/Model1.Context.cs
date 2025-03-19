@@ -27,6 +27,7 @@ namespace KN_ProyectoClase.BD
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Error> Error { get; set; }
         public virtual DbSet<Oferta> Oferta { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<Puesto> Puesto { get; set; }
@@ -75,6 +76,23 @@ namespace KN_ProyectoClase.BD
                 new ObjectParameter("Correo", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarCuenta", identificacionParameter, contrasennaParameter, nombreParameter, correoParameter);
+        }
+    
+        public virtual int RegistrarError(Nullable<long> idUsuario, string mensaje, string origen)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(long));
+    
+            var mensajeParameter = mensaje != null ?
+                new ObjectParameter("Mensaje", mensaje) :
+                new ObjectParameter("Mensaje", typeof(string));
+    
+            var origenParameter = origen != null ?
+                new ObjectParameter("Origen", origen) :
+                new ObjectParameter("Origen", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegistrarError", idUsuarioParameter, mensajeParameter, origenParameter);
         }
     }
 }

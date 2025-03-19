@@ -1,7 +1,7 @@
-﻿@model KN_ProyectoClase.Models.PuestoModel
+﻿@model KN_ProyectoClase.Models.OfertaModel
 
 @{
-    ViewBag.Title = "AgregarPuesto";
+    ViewBag.Title = "AgregarOferta";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
     <div class="col-lg-6 col-md-8">
 
         <div class="text-center">
-            <h1 class="h4 text-gray-900 mb-4">Crear Puesto</h1>
+            <h1 class="h4 text-gray-900 mb-4">Crear Oferta</h1>
         </div>
 
         @if (ViewBag.Mensaje != null)
@@ -20,13 +20,19 @@
             </div>
         }
 
-        @using (Html.BeginForm("AgregarPuesto", "Puesto"))
+        @using (Html.BeginForm("AgregarOferta", "Oferta"))
         {
             <div class="form-group">
-                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control form-control-user", @placeholder = "Nombre", @Required = "true" })
+                @Html.DropDownListFor(m => m.IdPuesto, (IEnumerable<SelectListItem>)ViewBag.PuestoCombo, new { @class = "form-control", @Required = "true" })
             </div>
             <div class="form-group">
-                @Html.TextAreaFor(x => x.Descripcion, new { @class = "form-control form-control-user", @placeholder = "Descripción", @Required = "true", @rows = 10, @maxLength = "255" })
+                @Html.TextBoxFor(x => x.Cantidad, new { @class = "form-control form-control-user", @placeholder = "Cantidad", @Required = "true" })
+            </div>
+            <div class="form-group">
+                @Html.TextBoxFor(x => x.Salario, new { @class = "form-control form-control-user", @placeholder = "Salario", @Required = "true" })
+            </div>
+            <div class="form-group">
+                @Html.TextBoxFor(x => x.Horario, new { @class = "form-control form-control-user", @placeholder = "Horario", @Required = "true" })
             </div>
 
             <div style="text-align: right; width: 200px">
@@ -36,3 +42,7 @@
 
     </div>
 </div>
+
+
+
+

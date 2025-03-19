@@ -1,6 +1,35 @@
-﻿
+﻿@model List<KN_ProyectoClase.BD.ConsultarOfertas_Result>
+
 @{
     ViewBag.Title = "Inicio";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="row">
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-warning msjCentrado">
+            @ViewBag.Mensaje
+        </div>
+    }
+
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6 col-sm-12">
+
+            <div class="card" style="margin-bottom:27px;">
+                <img class="card-img-top" src="..." alt="Card image cap">
+
+                <div class="card-body">
+                    <h5 class="card-title">@item.Nombre</h5>
+                    <h5 class="card-title">Salario: $@item.Salario.ToString("N2")</h5>
+                    <!--<textarea class="card-text form-control" style="border:none; background-color:transparent; resize: none;" rows="3" readonly>@item.Descripcion</textarea><br />-->
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

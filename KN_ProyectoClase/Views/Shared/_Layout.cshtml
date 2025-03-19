@@ -34,7 +34,7 @@
 
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Inicio", "Principal")">
                 <div class="sidebar-brand-text mx-3">Proyecto KN</div>
             </a>
 
@@ -112,11 +112,11 @@
                                 }
                                 else
                                 {
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="@Url.Action("ActualizarDatos", "Usuario")">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Actualizar Datos
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="@Url.Action("CambiarAcceso", "Usuario")">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Cambiar Contraseña
                                     </a>

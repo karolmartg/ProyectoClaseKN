@@ -13,7 +13,6 @@ namespace KN_ProyectoClase.Controllers
         RegistroErrores error = new RegistroErrores();
         Utilitarios util = new Utilitarios();
 
-        // GET: Usuario
         [HttpGet]
         public ActionResult CambiarAcceso()
         {
@@ -33,13 +32,11 @@ namespace KN_ProyectoClase.Controllers
         {
             try
             {
-                // La contraseña nueva y la de confirmar no coinciden
                 if (model.Contrasenna != model.ConfirmarContrasenna)
                 {
-                    ViewBag.Mensaje = "Debe confirmar su contraseña correctamente.";
+                    ViewBag.Mensaje = "Debe confirmar su contraseña correctamente";
                     return View();
                 }
-
 
                 using (var context = new KN_DBEntities())
                 {
@@ -48,26 +45,23 @@ namespace KN_ProyectoClase.Controllers
 
                     if (info != null)
                     {
-                        // Si la contraseña anterior es diferente a la contraseña de la DB
                         if (model.ContrasennaAnterior != info.Contrasenna)
                         {
-                            ViewBag.Mensaje = "Debe confirmar correctamente su contraseña actual.";
+                            ViewBag.Mensaje = "Debe confirmar correctamente su contraseña actual";
                             return View();
                         }
-
 
                         info.Contrasenna = model.Contrasenna;
                         context.SaveChanges();
 
                         string mensaje = $"Hola {info.Nombre}, se ha detectado el cambio de su contraseña.";
-
-                        var notificacion = util.EnviarCorreo(info, mensaje, "Seguridad sistema KN");
+                        var notificacion = util.EnviarCorreo(info.Correo, mensaje, "Seguridad sistema KN");
 
                         if (notificacion)
                             return RedirectToAction("Inicio", "Principal");
                     }
 
-                    ViewBag.Mensaje = "Su contraseña no se ha podido actualizar correctamente.";
+                    ViewBag.Mensaje = "Su contraseña no se ha podido actualizar correctamente";
                     return View();
                 }
             }
@@ -78,6 +72,7 @@ namespace KN_ProyectoClase.Controllers
             }
         }
 
+
         [HttpGet]
         public ActionResult ActualizarDatos()
         {
@@ -87,16 +82,15 @@ namespace KN_ProyectoClase.Controllers
                 {
                     long idSesion = long.Parse(Session["IdUsuario"].ToString());
                     var info = context.Usuario.Where(x => x.Id == idSesion).FirstOrDefault();
+
                     return View(info);
                 }
-
             }
             catch (Exception ex)
             {
                 error.RegistrarError(ex.Message, "Get ActualizarDatos");
                 return View("Error");
             }
-            return View();
         }
 
         [HttpPost]
@@ -109,18 +103,15 @@ namespace KN_ProyectoClase.Controllers
                     long idSesion = long.Parse(Session["IdUsuario"].ToString());
                     var info = context.Usuario.Where(x => x.Id == idSesion).FirstOrDefault();
 
-                    // Consultamos si el correo "Nuevo" existe en la base de datos
-                    var infoCorreo = context.Usuario.Where((x) => x.Correo == model.Correo
-                                                                  && x.Id != idSesion).FirstOrDefault();
+                    var infoCorreo = context.Usuario.Where(x => x.Correo == model.Correo
+                                                             && x.Id != idSesion).FirstOrDefault();
 
-                    // Si el correo "Nuevo" ya está registrado, NO debemos dejar actualizar
                     if (infoCorreo == null)
                     {
                         info.Identificacion = model.Identificacion;
                         info.Nombre = model.Nombre;
                         info.Correo = model.Correo;
                         var result = context.SaveChanges();
-
 
                         if (result > 0)
                         {
@@ -129,19 +120,15 @@ namespace KN_ProyectoClase.Controllers
                         }
                     }
 
-
                     ViewBag.Mensaje = "Su información no se ha podido actualizar correctamente";
                     return View();
-
                 }
             }
             catch (Exception ex)
             {
                 error.RegistrarError(ex.Message, "Post ActualizarDatos");
                 return View("Error");
-
             }
         }
-
     }
 }

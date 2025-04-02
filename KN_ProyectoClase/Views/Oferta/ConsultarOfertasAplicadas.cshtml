@@ -1,4 +1,4 @@
-﻿@model List<KN_ProyectoClase.BD.ConsultarOfertas_Result>
+﻿@model List<KN_ProyectoClase.BD.UsuariosOferta>
 
 @{
     ViewBag.Title = "ConsultarOfertas";
@@ -7,36 +7,30 @@
 
 <div class="container-fluid">
 
-    <h5 class="m-0 font-weight-bold text-primary">Ofertas Disponibles</h5>
+    <h5 class="m-0 font-weight-bold text-primary">Participación de Ofertas</h5>
 
     <br />
 
     <table id="example" class="table table-bordered table-hover">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Cantidad</th>
+                <th>Oferta</th>
+                <th>Fecha</th>
+                <th>Estado</th>
                 <th>Salario</th>
                 <th>Horario</th>
-                <th>Estado</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
 
             @foreach (var item in Model)
             {
-                var disponible = item.Disponible ? "Activo" : "Inactivo";
-
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Nombre</td>
-                    <td>@item.Cantidad</td>
-                    <td>$ @item.Salario.ToString("N2")</td>
-                    <td>@item.Horario</td>
-                    <td>@disponible</td>
-                    <td><input type="button" class="btn btn-outline-primary" value="Ver Detalle" /></td>
+                    <td>@item.Oferta.Puesto.Nombre</td>
+                    <td>@item.Fecha</td>
+                    <td>@item.EstadoAplicacion.NombreEstado</td>
+                    <td>$ @item.Oferta.Salario.ToString("N2")</td>
+                    <td>@item.Oferta.Horario</td>
                 </tr>
             }
 

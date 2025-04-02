@@ -1,35 +1,100 @@
 ﻿@model List<KN_ProyectoClase.BD.ConsultarOfertas_Result>
 
 @{
-    ViewBag.Title = "Inicio";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-warning msjCentrado">
+        @ViewBag.Mensaje
+    </div>
+}
+
 <div class="row">
-    @if (ViewBag.Mensaje != null)
-    {
-        <div class="alert alert-warning msjCentrado">
-            @ViewBag.Mensaje
-        </div>
-    }
 
     @foreach (var item in Model)
     {
-        <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="col-lg-3 col-md-6 col-sm-12">
 
             <div class="card" style="margin-bottom:27px;">
-                <img class="card-img-top" src="..." alt="Card image cap">
+
+                <div style="text-align:center">
+                    <img class="card-img-top" src="@item.Imagen" style="width:60%; height:175px;" alt="Imagen No cargada">
+                </div>
 
                 <div class="card-body">
                     <h5 class="card-title">@item.Nombre</h5>
                     <h5 class="card-title">Salario: $@item.Salario.ToString("N2")</h5>
-                    <!--<textarea class="card-text form-control" style="border:none; background-color:transparent; resize: none;" rows="3" readonly>@item.Descripcion</textarea><br />-->
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
+                    <h5 class="card-title">Espacios: @item.Cantidad</h5>
+                    <h5 class="card-title">Horario: @item.Horario</h5>
 
+                    @if (Session["IdPerfilUsuario"] != null)
+                    {
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary abrirModal" data-toggle="modal" data-target="#exampleModal"
+                                    data-nombre="@item.Nombre"
+                                    data-id="@item.Id"
+                                    data-desc="@item.Descripcion"
+                                    data-salario="@item.Salario"
+                                    data-horario="@item.Horario">
+                                Ver Detalle
+                            </button>
+                        </div>
+                    }
+
+                </div>
             </div>
 
         </div>
     }
-
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><label id="lblNombre"></label></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @using (Html.BeginForm("AplicarOferta", "Principal"))
+            {
+                <div class="modal-body">
+
+                    @Html.Hidden("Id", "")
+                    @Html.Hidden("Nombre", "")
+
+                    <textarea id="lblDescripcion" class="form-control" rows="10" style="resize:none; background-color:transparent;" readonly="readonly"></textarea>
+
+                    <br />
+                    El salario es: <label id="lblSalario"></label><br />
+                    El horario es: <label id="lblHorario"></label><br />
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="APLICAR" />
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Template/js/jquery.min.js"></script>
+<script>
+
+    $(document).on("click", ".abrirModal", function () {
+
+        $("#lblNombre").text($(this).attr("data-nombre"));
+        $("#Nombre").val($(this).attr("data-nombre"));
+        $("#Id").val($(this).attr("data-id"));
+        $("#lblDescripcion").text($(this).attr("data-desc"));
+        $("#lblHorario").text($(this).attr("data-horario"));
+        $("#lblSalario").text($(this).attr("data-salario"));
+    });
+
+</script>

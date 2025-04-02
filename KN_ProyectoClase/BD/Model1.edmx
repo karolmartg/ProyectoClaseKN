@@ -15,6 +15,13 @@
           <Property Name="FechaHora" Type="datetime" Nullable="false" />
           <Property Name="Origen" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
+        <EntityType Name="EstadoAplicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreEstado" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Oferta">
           <Key>
             <PropertyRef Name="Id" />
@@ -25,6 +32,7 @@
           <Property Name="Salario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Horario" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Disponible" Type="bit" Nullable="false" />
+          <Property Name="Imagen" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Perfil">
           <Key>
@@ -87,27 +95,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UsuariosOferta_EstadoAplicacion">
+          <End Role="EstadoAplicacion" Type="Self.EstadoAplicacion" Multiplicity="1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoAplicacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="Estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UsuariosOferta_Oferta">
           <End Role="Oferta" Type="Self.Oferta" Multiplicity="1" />
-          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="0..1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Oferta">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="UsuariosOferta">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="IdOferta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UsuariosOferta_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
-          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="0..1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Usuario">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="UsuariosOferta">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -130,6 +150,7 @@
         </Function>
         <EntityContainer Name="KN_DBModelStoreContainer">
           <EntitySet Name="Error" EntityType="Self.Error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstadoAplicacion" EntityType="Self.EstadoAplicacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Oferta" EntityType="Self.Oferta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Puesto" EntityType="Self.Puesto" Schema="dbo" store:Type="Tables" />
@@ -142,6 +163,10 @@
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuariosOferta_EstadoAplicacion" Association="Self.FK_UsuariosOferta_EstadoAplicacion">
+            <End Role="EstadoAplicacion" EntitySet="EstadoAplicacion" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
           </AssociationSet>
           <AssociationSet Name="FK_UsuariosOferta_Oferta" Association="Self.FK_UsuariosOferta_Oferta">
             <End Role="Oferta" EntitySet="Oferta" />
@@ -167,6 +192,14 @@
           <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Origen" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
+        <EntityType Name="EstadoAplicacion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreEstado" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="UsuariosOferta" Relationship="Self.FK_UsuariosOferta_EstadoAplicacion" FromRole="EstadoAplicacion" ToRole="UsuariosOferta" />
+        </EntityType>
         <EntityType Name="Oferta">
           <Key>
             <PropertyRef Name="Id" />
@@ -177,6 +210,7 @@
           <Property Name="Salario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Horario" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Disponible" Type="Boolean" Nullable="false" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Puesto" Relationship="Self.FK_Oferta_Puesto" FromRole="Oferta" ToRole="Puesto" />
           <NavigationProperty Name="UsuariosOferta" Relationship="Self.FK_UsuariosOferta_Oferta" FromRole="Oferta" ToRole="UsuariosOferta" />
         </EntityType>
@@ -220,9 +254,22 @@
           <Property Name="IdOferta" Type="Int64" Nullable="false" />
           <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Estado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EstadoAplicacion" Relationship="Self.FK_UsuariosOferta_EstadoAplicacion" FromRole="UsuariosOferta" ToRole="EstadoAplicacion" />
           <NavigationProperty Name="Oferta" Relationship="Self.FK_UsuariosOferta_Oferta" FromRole="UsuariosOferta" ToRole="Oferta" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_UsuariosOferta_Usuario" FromRole="UsuariosOferta" ToRole="Usuario" />
         </EntityType>
+        <Association Name="FK_UsuariosOferta_EstadoAplicacion">
+          <End Role="EstadoAplicacion" Type="Self.EstadoAplicacion" Multiplicity="1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoAplicacion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuariosOferta">
+              <PropertyRef Name="Estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Oferta_Puesto">
           <End Role="Puesto" Type="Self.Puesto" Multiplicity="1" />
           <End Role="Oferta" Type="Self.Oferta" Multiplicity="*" />
@@ -237,13 +284,13 @@
         </Association>
         <Association Name="FK_UsuariosOferta_Oferta">
           <End Role="Oferta" Type="Self.Oferta" Multiplicity="1" />
-          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="0..1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Oferta">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="UsuariosOferta">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="IdOferta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -261,23 +308,28 @@
         </Association>
         <Association Name="FK_UsuariosOferta_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
-          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="0..1" />
+          <End Role="UsuariosOferta" Type="Self.UsuariosOferta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Usuario">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="UsuariosOferta">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="KN_DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Error" EntityType="Self.Error" />
+          <EntitySet Name="EstadoAplicacion" EntityType="Self.EstadoAplicacion" />
           <EntitySet Name="Oferta" EntityType="Self.Oferta" />
           <EntitySet Name="Perfil" EntityType="Self.Perfil" />
           <EntitySet Name="Puesto" EntityType="Self.Puesto" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" />
           <EntitySet Name="UsuariosOferta" EntityType="Self.UsuariosOferta" />
+          <AssociationSet Name="FK_UsuariosOferta_EstadoAplicacion" Association="Self.FK_UsuariosOferta_EstadoAplicacion">
+            <End Role="EstadoAplicacion" EntitySet="EstadoAplicacion" />
+            <End Role="UsuariosOferta" EntitySet="UsuariosOferta" />
+          </AssociationSet>
           <AssociationSet Name="FK_Oferta_Puesto" Association="Self.FK_Oferta_Puesto">
             <End Role="Puesto" EntitySet="Puesto" />
             <End Role="Oferta" EntitySet="Oferta" />
@@ -321,6 +373,7 @@
           <Property Type="Decimal" Name="Salario" Nullable="false" Precision="10" Scale="2" />
           <Property Type="String" Name="Horario" Nullable="false" MaxLength="255" />
           <Property Type="Boolean" Name="Disponible" Nullable="false" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
         </ComplexType>
         <ComplexType Name="ConsultarPuestos_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
@@ -354,6 +407,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EstadoAplicacion">
+            <EntityTypeMapping TypeName="KN_DBModel.EstadoAplicacion">
+              <MappingFragment StoreEntitySet="EstadoAplicacion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NombreEstado" ColumnName="NombreEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Oferta">
             <EntityTypeMapping TypeName="KN_DBModel.Oferta">
               <MappingFragment StoreEntitySet="Oferta">
@@ -363,6 +424,7 @@
                 <ScalarProperty Name="Salario" ColumnName="Salario" />
                 <ScalarProperty Name="Horario" ColumnName="Horario" />
                 <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -418,6 +480,7 @@
                 <ScalarProperty Name="Salario" ColumnName="Salario" />
                 <ScalarProperty Name="Horario" ColumnName="Horario" />
                 <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

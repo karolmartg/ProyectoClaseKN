@@ -28,6 +28,7 @@ namespace KN_ProyectoClase.BD
         }
     
         public virtual DbSet<Error> Error { get; set; }
+        public virtual DbSet<EstadoAplicacion> EstadoAplicacion { get; set; }
         public virtual DbSet<Oferta> Oferta { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<Puesto> Puesto { get; set; }

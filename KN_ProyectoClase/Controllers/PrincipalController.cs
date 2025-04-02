@@ -1,6 +1,7 @@
 ﻿using KN_ProyectoClase.BD;
 using KN_ProyectoClase.Models;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
@@ -109,6 +110,7 @@ namespace KN_ProyectoClase.Controllers
                         Session["NombreUsuario"] = info.NombreUsuario;
                         Session["NombrePerfilUsuario"] = info.NombrePerfil;
                         Session["IdPerfilUsuario"] = info.idPerfil;
+                        Session["CorreoUsuario"] = info.Correo;
                         return RedirectToAction("Inicio", "Principal");
                     }
                     else
@@ -127,7 +129,8 @@ namespace KN_ProyectoClase.Controllers
 
         #endregion
 
-        #region RecuperarContrasena
+        #region RecuperarContrasenna
+
         [HttpGet]
         public ActionResult RecuperarContrasenna()
         {
@@ -160,8 +163,7 @@ namespace KN_ProyectoClase.Controllers
                         context.SaveChanges();
 
                         string mensaje = $"Hola {info.Nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigoTemporal}";
-
-                        var notificacion = util.EnviarCorreo(info, mensaje, "Acceso al sistema KN");
+                        var notificacion = util.EnviarCorreo(info.Correo, mensaje, "Acceso al sistema KN");
 
                         if (notificacion)
                             return RedirectToAction("IniciarSesion", "Principal");
@@ -185,15 +187,74 @@ namespace KN_ProyectoClase.Controllers
         {
             try
             {
-                using (var context = new KN_DBEntities())
-                {
-                    var info = context.ConsultarOfertas().Where(x => x.Disponible == true).ToList();
-                    return View(info);
-                }
+                var ofertasTop = ConsultarOfertasTop();
+                return View(ofertasTop);
             }
             catch (Exception ex)
             {
                 error.RegistrarError(ex.Message, "Get Inicio");
+                return View("Error");
+            }
+        }
+
+        public List<ConsultarOfertas_Result> ConsultarOfertasTop()
+        {
+            using (var context = new KN_DBEntities())
+            {
+                return context.ConsultarOfertas().Where(x => x.Disponible == true && x.Cantidad > 0)
+                    .OrderByDescending(x => x.Salario)
+                    .Take(4)
+                    .ToList();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AplicarOferta(ConsultarOfertas_Result model)
+        {
+            try
+            {
+                using (var context = new KN_DBEntities())
+                {
+                    var IdUsuario = long.Parse(Session["IdUsuario"].ToString());
+
+                    var info = context.UsuariosOferta.Where(x => x.IdUsuario == IdUsuario
+                                                              && x.IdOferta == model.Id).FirstOrDefault();
+
+                    var ofertasTop = ConsultarOfertasTop();
+
+                    if (info != null)
+                    {
+                        ViewBag.Mensaje = "Ya se encuentra participando en esta oferta";
+                        return View("Inicio", ofertasTop);
+                    }
+
+                    UsuariosOferta tabla = new UsuariosOferta();
+                    tabla.Id = 0;
+                    tabla.IdUsuario = long.Parse(Session["IdUsuario"].ToString());
+                    tabla.IdOferta = model.Id;
+                    tabla.Fecha = DateTime.Now;
+                    tabla.Estado = 1;
+
+                    context.UsuariosOferta.Add(tabla);
+                    var result = context.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        string mensaje = $"Hola {Session["NombreUsuario"].ToString()}, la postulación en la oferta {model.Nombre} ha sido registrada";
+                        var notificacion = util.EnviarCorreo(Session["CorreoUsuario"].ToString(), mensaje, "Postulación de Ofertas");
+
+                        return RedirectToAction("ConsultarOfertasAplicadas", "Oferta");
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = "No fue posible aplicar en esta oferta";
+                        return View("Inicio", ofertasTop);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.RegistrarError(ex.Message, "Post AplicarOferta");
                 return View("Error");
             }
         }
@@ -212,6 +273,7 @@ namespace KN_ProyectoClase.Controllers
                 return View("Error");
             }
         }
+
         private string CrearCodigo()
         {
             int length = 5;

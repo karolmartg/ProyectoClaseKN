@@ -21,5 +21,6 @@ namespace KN_ProyectoClase.BD
         public decimal Salario { get; set; }
         public string Horario { get; set; }
         public bool Disponible { get; set; }
+        public string Imagen { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace KN_ProyectoClase.BD
         public System.DateTime Fecha { get; set; }
         public int Estado { get; set; }
     
+        public virtual EstadoAplicacion EstadoAplicacion { get; set; }
         public virtual Oferta Oferta { get; set; }
         public virtual Usuario Usuario { get; set; }
     }

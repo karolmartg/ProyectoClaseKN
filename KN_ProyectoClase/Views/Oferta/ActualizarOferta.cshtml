@@ -26,7 +26,7 @@
             @Html.HiddenFor(x => x.Imagen, new { @class = "form-control form-control-user" })
 
             <div class="form-group">
-                @Html.DropDownListFor(x => x.IdPuesto, (IEnumerable<SelectListItem>)ViewBag.PuestoCombo, new { @class = "form-control", @Required = "true" })
+                @Html.DropDownListFor(x => x.idPuesto, (IEnumerable<SelectListItem>)ViewBag.PuestoCombo, new { @class = "form-control", @Required = "true" })
             </div>
             <div class="form-group">
                 @Html.TextBoxFor(x => x.Cantidad, new { @class = "form-control form-control-user", @placeholder = "Cantidad", @Required = "true" })
